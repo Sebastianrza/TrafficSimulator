@@ -190,7 +190,7 @@ public abstract class Road extends SimulatedObject{
 		ro.put("id", this._id);
 		ro.put("speedlimit", current_speed_limit);
 		ro.put("co2", this.total_contamination);
-		ro.put("weather",this.weather);
+		ro.put("weather",this.weather.toString());
 		ro.put("vehicles", vh);
 		return ro;
 	}

@@ -170,7 +170,7 @@ public class Vehicle extends SimulatedObject{
 		vh.put("distance", this.total_travelled_distance);
 		vh.put("co2",this.total_contamination);
 		vh.put("class",this.contamination);
-		vh.put("status", this.status);
+		vh.put("status", this.status.toString());
 		if(this.status != VehicleStatus.PENDING && this.status != VehicleStatus.ARRIVED) {
 			vh.put("road", this.road);
 			vh.put("location", this.location);
