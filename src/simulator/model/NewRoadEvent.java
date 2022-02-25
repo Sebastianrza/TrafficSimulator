@@ -6,7 +6,7 @@ public abstract class NewRoadEvent extends Event {
     protected String src;
     protected String dest;
     protected int maxSpeed;
-    protected int length = 0;
+    protected int length;
     protected Weather weather;
     protected int co2limit;
 
