@@ -12,13 +12,14 @@ import simulator.misc.SortedArrayList;
 public class TrafficSimulator {
 
 	protected RoadMap roadmap;
-	protected List<Event> list_event = new SortedArrayList<>();
+	protected List<Event> list_event ;
 	private int simulation_time;
 	
 	public TrafficSimulator() {
 		this.roadmap = new RoadMap(new ArrayList<Junction>(), new ArrayList<Road>(),
 				new ArrayList<Vehicle>(), new HashMap<String, Junction>(), new HashMap<String, Road>(),
 				new HashMap<String, Vehicle>());
+		this.list_event = new SortedArrayList<>();
 		
 	}
 	
