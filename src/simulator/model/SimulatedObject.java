@@ -7,7 +7,10 @@ public abstract class SimulatedObject {
 	protected String _id;
 
 	SimulatedObject(String id) {
-		_id = id;
+		if(!id.isEmpty()) _id = id;
+		else {
+			throw new IllegalArgumentException("this id is null or is empty");
+		}
 	}
 
 	public String getId() {

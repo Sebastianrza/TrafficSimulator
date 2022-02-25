@@ -37,6 +37,7 @@ public class RoadMap {
 	}
 	
 	
+	@SuppressWarnings("unlikely-arg-type")
 	void addRoad(Road r) {
 		if(road.contains(r) == true && map_road.containsValue(r.getDest()) == false &&
 				map_road.containsValue(r.getSrc()) == false){

@@ -10,11 +10,11 @@ import org.json.JSONObject;
 
 public class Junction extends SimulatedObject{
 	
-	protected List<Road> incoming_roads = new LinkedList<>(); //Este cruce es el destieno de estas carreteras
-	protected Map<Junction,Road> outgoing_roads = new HashMap<>(); //this --Road-->Jun
+	protected List<Road> incoming_roads; //Este cruce es el destieno de estas carreteras
+	protected Map<Junction,Road> outgoing_roads ; //this --Road-->Jun
 	protected List<List<Vehicle>> queue; 
-	protected int green_traffic_light = -1;
-	protected int traffic_light_change = 0;
+	protected int green_traffic_light ;
+	protected int traffic_light_change;
 	protected LightSwitchingStrategy lsStrategy;
 	protected DequeuingStrategy dqStrategy;
 	protected int xCoor;
@@ -43,7 +43,10 @@ public class Junction extends SimulatedObject{
 			}else {
 				throw new IllegalArgumentException("The yCoor is negative");
 			}
-			
+			this.green_traffic_light = -1;
+			this.traffic_light_change = 0;
+			this.incoming_roads =  new LinkedList<>();
+			this.outgoing_roads = new HashMap<>();
 			queue = new LinkedList<List<Vehicle>>();
 		// TODO Auto-generated constructor stub
 	}

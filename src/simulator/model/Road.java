@@ -10,17 +10,21 @@ public abstract class Road extends SimulatedObject{
 
 	protected Junction src;
 	protected Junction dest;
-	protected int length = 0;
-	protected int maximum_speed = 0;
-	protected int current_speed_limit = this.maximum_speed;
-	protected int contLimit = 0;
+	protected int length;
+	protected int maximum_speed;
+	protected int current_speed_limit;
+	protected int contLimit;
 	protected Weather weather;
-	protected int total_contamination = 0;
-	protected List<Vehicle> vehicles = new LinkedList<Vehicle>();
+	protected int total_contamination;
+	protected List<Vehicle> vehicles;
+	protected VehicleCompare compare;
 	
 	protected Road(String id, Junction src, Junction dest, int maximum_speed,int contLimit, int length, 
 			Weather weather) {
 		super(id);
+		this.total_contamination = 0;
+		this.current_speed_limit = this.maximum_speed;
+		this.vehicles = new LinkedList<Vehicle>();
 		if(src != null) {
 		this.src = src;
 		}else {
@@ -130,6 +134,7 @@ public abstract class Road extends SimulatedObject{
 		if(v.getCurrent_speed() == 0 && v.getLocation() == 0) {
 			this.vehicles.add(v);
 		}else {
+
 			throw new IllegalArgumentException("The location or the Speed is diferent of 0");
 		}
 	}
@@ -169,6 +174,8 @@ public abstract class Road extends SimulatedObject{
 				v.advance(time);
 			}
 		}
+		compare = new VehicleCompare();
+		vehicles.sort(compare);
 		
 	}
 

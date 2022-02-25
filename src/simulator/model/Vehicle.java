@@ -10,17 +10,22 @@ public class Vehicle extends SimulatedObject{
 	
 	protected List<Junction> itinerary;
 	protected int maxSpeed;
-	protected int actSpeed = 0;
+	protected int actSpeed;
 	protected VehicleStatus status;
 	protected Road road;
-	protected int location = 0;
-	protected int contamination = 0;
-	protected int total_contamination = 0;
-	protected int total_travelled_distance = 0;
-	protected int lastJunction = 0;
+	protected int location;
+	protected int contamination;
+	protected int total_contamination;
+	protected int total_travelled_distance;
+	protected int lastJunction;
 
 	protected Vehicle(String id, int maxSpeed, int contamination, List<Junction> itinerary) {
 		super(id);
+		this.location = 0;
+		this.actSpeed = 0;
+		this.total_contamination = 0;
+		this.lastJunction = 0;
+		this.total_travelled_distance = 0;
 		if(maxSpeed >= 0) {
 			this.maxSpeed = maxSpeed;
 		}else {
@@ -116,47 +121,44 @@ public class Vehicle extends SimulatedObject{
 	@Override
 	void advance(int time) {
 		if(this.status == VehicleStatus.TRAVELING) {
-			   this.lastJunction = this.location;
+			   int locationaux = this.location;
 			   this.location = Math.min(this.location + this.actSpeed, road.getLength());
-			   int contAct = contamination * ((this.location-this.lastJunction));
+			   int contAct = contamination * ((this.location-locationaux));
 			   road.addContamination(contAct);
 			   total_contamination += contAct ;
-			   this.total_travelled_distance += (this.location-this.lastJunction);
+			   this.total_travelled_distance += (this.location-locationaux);
 			     
 			   if (this.location >= road.getLength()) {
-			    
-				    this.actSpeed = 0;
+				    this.lastJunction++;
 				    status = VehicleStatus.WAITING;
+				    this.actSpeed = 0;
 				    road.getDest().enter(this);
+				   
 			   }    
 		}
 		
 	}
 
 	void moveToNextRoad() {
-		this.lastJunction += this.location; // siempre es ceros
-		  if(this.status == VehicleStatus.PENDING){ // inicio del viaje
-			   this.location = 0;
-			   this.setSpeed(0);
-			   road = itinerary.get(0).roadTo(itinerary.get(1));
-			   road.enter(this);
-			   this.status = VehicleStatus.TRAVELING;
-		   
-		  }else 
-		   if(itinerary.indexOf(road.getDest())+1 == itinerary.size()){ // 
-			    this.location = -1;
-			    this.road.exit(this);
-			    this.road = null;
-			    this.status = VehicleStatus.ARRIVED;
-			    this.actSpeed = 0;
-		  }else{ 
-			   this.location = 0;
-			   int temp_indexJuntion = itinerary.indexOf(road.getDest())+1;
-			   this.road.exit(this);
-			   road = road.getDest().roadTo(itinerary.get(temp_indexJuntion));
-			   this.road.enter(this);
-			   this.status = VehicleStatus.TRAVELING;
-		  }
+		if(this.status != VehicleStatus.PENDING && this.status != VehicleStatus.WAITING) {
+			throw new IllegalArgumentException("This Vehicle is in status incorrect");
+		}
+		if(this.road != null) {//Vehiculo sale de la carretera 
+			this.road.exit(this);
+		}
+		if(this.lastJunction == this.itinerary.size()-1) {//Si ya termino el recorrido
+			this.status = VehicleStatus.ARRIVED;
+			this.road = null;
+			this.location = 0;
+			this.actSpeed = 0;
+		}else {//Si todavia le queda algun itinerario 
+			this.road = this.itinerary.get(lastJunction).roadTo(this.itinerary.get(lastJunction+1));
+			this.location = 0;
+			this.status = VehicleStatus.TRAVELING;
+			this.actSpeed = 0;
+			this.road.enter(this);
+			
+		}
 	}
 
 	@Override
@@ -169,8 +171,10 @@ public class Vehicle extends SimulatedObject{
 		vh.put("co2",this.total_contamination);
 		vh.put("class",this.contamination);
 		vh.put("status", this.status);
-		vh.put("road", this.road);
-		if(this.location !=-1)vh.put("location", this.location);
+		if(this.status != VehicleStatus.PENDING && this.status != VehicleStatus.ARRIVED) {
+			vh.put("road", this.road);
+			vh.put("location", this.location);
+		}
 		// TODO Auto-generated method stub
 		return vh;
 	}
