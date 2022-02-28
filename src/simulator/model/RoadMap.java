@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -18,12 +19,11 @@ public class RoadMap {
 	protected Map<String, Road> map_road;
 	protected Map<String, Vehicle> map_vehicle;
 	
-	protected RoadMap(List<Junction> junction, List<Road> road, List<Vehicle> vehicle, Map<String, Junction> map_junction,
-			Map<String, Road> map_road, Map<String, Vehicle> map_vehicle) {
+	protected RoadMap() {
 		
-		this.junction = junction;
-		this.road = road;
-		this.vehicle = vehicle;
+		this.junction = new ArrayList<>();
+		this.road = new ArrayList<>();
+		this.vehicle = new ArrayList<>();
 		this.map_junction = new LinkedHashMap<>();
 		this.map_road = new LinkedHashMap<>();
 		this.map_vehicle =new LinkedHashMap<>();

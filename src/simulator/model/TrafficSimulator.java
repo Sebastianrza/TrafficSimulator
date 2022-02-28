@@ -1,7 +1,6 @@
 package simulator.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,9 +15,7 @@ public class TrafficSimulator {
 	private int simulation_time;
 	
 	public TrafficSimulator() {
-		this.roadmap = new RoadMap(new ArrayList<Junction>(), new ArrayList<Road>(),
-				new ArrayList<Vehicle>(), new HashMap<String, Junction>(), new HashMap<String, Road>(),
-				new HashMap<String, Vehicle>());
+		this.roadmap = new RoadMap();
 		this.list_event = new SortedArrayList<>();
 		
 	}

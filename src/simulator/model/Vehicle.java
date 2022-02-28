@@ -56,6 +56,14 @@ public class Vehicle extends SimulatedObject{
 		this.itinerary = itinerary;
 	}
 
+	public int getTotal_contamination() {
+		return total_contamination;
+	}
+
+	public void setTotal_contamination(int total_contamination) {
+		this.total_contamination = total_contamination;
+	}
+
 	public Road getRoad() {
 		return road;
 	}

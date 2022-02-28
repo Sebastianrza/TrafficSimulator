@@ -13,7 +13,8 @@ public class Junction extends SimulatedObject{
 	protected List<Road> incoming_roads; //Este cruce es el destieno de estas carreteras
 	protected Map<Junction,Road> outgoing_roads ; //this --Road-->Jun
 	protected List<List<Vehicle>> queue; 
-	protected int green_traffic_light ;
+	protected Map<Road, List<Vehicle>> road_queue;
+ 	protected int green_traffic_light ;
 	protected int traffic_light_change;
 	protected LightSwitchingStrategy lsStrategy;
 	protected DequeuingStrategy dqStrategy;
@@ -45,34 +46,33 @@ public class Junction extends SimulatedObject{
 			}
 			this.green_traffic_light = -1;
 			this.traffic_light_change = 0;
-			this.incoming_roads =  new LinkedList<>();
-			this.outgoing_roads = new HashMap<>();
+			this.incoming_roads =  new LinkedList<Road>();
+			this.road_queue = new HashMap<Road, List<Vehicle>>();
+			this.outgoing_roads = new HashMap<Junction,Road>();
 			queue = new LinkedList<List<Vehicle>>();
 		// TODO Auto-generated constructor stub
 	}
 	
 	void addIncommingRoad(Road r) {
-		if(r.getDest()._id == this._id) {
+		if(this.equals(r.getDest())) {
 			incoming_roads.add(r);
-			queue.add(new LinkedList<Vehicle>());
+			List<Vehicle> aux = new LinkedList<Vehicle>();
+			queue.add(aux);
+			road_queue.put(r, aux);
 		}
 		
 	}
 	
 	void addOutGoingRoad(Road r) {
-		if(outgoing_roads.containsKey(r.getDest())){ 
-			throw new IllegalArgumentException("This road goes to junction j ");
-		}else{
-			if(r.getSrc()._id == this._id){
-				
-				outgoing_roads.put(r.getDest(), r);
-				
-			}else{
-				
-				throw new IllegalArgumentException("This junction does not belong to the road ");
-				
-			}
+		if(!this.equals(r.getSrc())) {
+			throw new IllegalArgumentException("Don't exist the junction");
 		}
+		
+		if(outgoing_roads.get(r.getDest()) != null) {
+			throw new IllegalArgumentException("One More junction");
+		}
+		
+		outgoing_roads.put(r.getDest(), r);
 	}
 	
 	Road roadTo(Junction j) {
@@ -80,7 +80,9 @@ public class Junction extends SimulatedObject{
 		
 	}
 	void enter(Vehicle v) {
-		this.queue.get(this.incoming_roads.indexOf(v.getRoad())).add(v);
+		Road r = v.getRoad();
+		List<Vehicle> q = road_queue.get(r);
+		q.add(v);
 	}
 	@Override
 	void advance(int time) {
