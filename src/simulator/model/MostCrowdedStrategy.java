@@ -14,33 +14,45 @@ public class MostCrowdedStrategy implements LightSwitchingStrategy {
 	public int chooseNextGreen(List<Road> roads, List<List<Vehicle>> qs, int currGreen, int lastSwitchingTime,
 			int currTime) {
 		if(roads.isEmpty()) {
+			
 			return -1;
-		}
-		if(roads.size() == 0) {
-			return -1;
-		}
-		if(currGreen == -1) {
-			return Cola(0,roads, qs);
-		}
-		if((currTime-lastSwitchingTime) < this.timeSlot) {
-			return currGreen;
-		}
-		else {
-			return Cola((currGreen +1 )%(roads.size()), roads, qs);
-	}
-}
-		public int Cola(int comenzar, List<Road> roads, List<List<Vehicle>> qs){
-			int maximo = 0;
-			int maximoI = 0;
-			for(int i = comenzar; i!=comenzar; i = (i+1)%roads.size()) {
-				int temp = qs.get(i).size();
-				if(temp > maximo) {
-					maximo = temp;
-					maximoI = i;
+			
+		}else if(currGreen == -1) {
+			
+			int queue = 0;
+			int max = 0;
+			
+			for(int i = 0; i < qs.size(); i++) {
+				if(queue < qs.get(i).size()) {
+					queue = qs.get(i).size();
+					max = i;
 				}
 			}
-			return maximoI-1;
+			return max;
+			
+		}else if((currTime-lastSwitchingTime) < this.timeSlot) {
+			
+			return currGreen;
+			
 		}
+		else {
+			int queue = 0;
+			int max = 0;
+			int buscar = (currGreen + 1)%qs.size();
+			
+			for(int i = 0; i < qs.size(); i++) {
+				if(queue < qs.get(buscar).size()) {
+					queue = qs.get(buscar).size();
+					max = buscar;
+				}
+				buscar++;
+				if(buscar == qs.size()) {
+					buscar = 0;
+				}
+			}
+			return max;
+	}
+}
 		@Override
 		public String toString(){
 			return "Most_Crowded_lss";

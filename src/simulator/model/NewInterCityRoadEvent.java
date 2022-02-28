@@ -4,9 +4,8 @@ public class NewInterCityRoadEvent extends NewRoadEvent {
 	
 	
 
-	public NewInterCityRoadEvent(int time, String id, String src, String dest, int maxSpeed, int co2limit, int length,
-			Weather weather) {
-		super(time, id, src, dest, maxSpeed, co2limit, length, weather);
+	public NewInterCityRoadEvent(int time, String id, String src, String dest, int length,  int co2limit, int maxSpeed, Weather weather) {
+		super(time, id, src, dest, length, co2limit, maxSpeed, weather);
 		// TODO Auto-generated constructor stub
 	}
 

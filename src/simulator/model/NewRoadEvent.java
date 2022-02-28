@@ -11,7 +11,7 @@ public abstract class NewRoadEvent extends Event {
     protected int co2limit;
 
 	
-	NewRoadEvent(int time, String id, String src, String dest, int maxSpeed, int co2limit, int length , Weather weather) {
+	NewRoadEvent(int time, String id, String src, String dest, int length,  int co2limit, int maxSpeed, Weather weather) {
 		
 		super(time);
 		this.id = id;
