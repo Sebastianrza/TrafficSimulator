@@ -162,7 +162,7 @@ public class Vehicle extends SimulatedObject{
 			this.road = null;
 			this.location = 0;
 			this.actSpeed = 0;
-		}else {//Si todavia le queda algun itinerario.
+		}else {//Si todavia le queda algun itinerario
 			
 			this.road = this.itinerary.get(lastJunction).roadTo(this.itinerary.get(lastJunction+1));
 			this.location = 0;
