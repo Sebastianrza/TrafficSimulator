@@ -23,10 +23,10 @@ public class NewVehicleEvent extends Event{
 	}
 	@Override
 	void execute(RoadMap map) {
-		ArrayList<Junction> listJunc = new ArrayList<>();
-		for(int i = 0; i<this.itinerary.size(); i++) { //
-			String temp = this.itinerary.get(i);
-			listJunc.add(map.getJunction(temp));
+		ArrayList<Junction> listJunc = new ArrayList<Junction>(itinerary.size());
+		
+		for(String junc: itinerary) {
+			listJunc.add(map.getJunction(junc));		
 		}
 		Vehicle v = new Vehicle(this.id, this.maxSpeed, this.contClass, listJunc);
 		map.addVehicle(v);

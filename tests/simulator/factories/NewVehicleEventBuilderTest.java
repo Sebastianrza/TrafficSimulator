@@ -80,9 +80,9 @@ class NewVehicleEventBuilderTest {
 		ts.addEvent(e);
 		
 		ts.advance();
-				
+		String c = ts.report().toString();
 		String s = "{\"time\":1,\"state\":{\"roads\":[{\"speedlimit\":120,\"co2\":261,\"weather\":\"SUNNY\",\"vehicles\":[\"v1\"],\"id\":\"r1\"}],\"vehicles\":[{\"distance\":87,\"road\":\"r1\",\"co2\":261,\"location\":87,\"id\":\"v1\",\"class\":3,\"speed\":87,\"status\":\"TRAVELING\"}],\"junctions\":[{\"green\":\"none\",\"queues\":[],\"id\":\"j1\"},{\"green\":\"r1\",\"queues\":[{\"road\":\"r1\",\"vehicles\":[]}],\"id\":\"j2\"}]}}";
-		assertTrue(new JSONObject(s).similar(ts.report()));
+		assertTrue(new JSONObject(s).similar(new JSONObject(c)));
 	
 	}
 

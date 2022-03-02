@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -59,11 +60,14 @@ public class Junction extends SimulatedObject{
 			List<Vehicle> aux = new LinkedList<Vehicle>();
 			queue.add(aux);
 			road_queue.put(r, aux);
+		}else {
+			throw new IllegalArgumentException("This junction not exist");
 		}
 		
 	}
 	
 	void addOutGoingRoad(Road r) {
+		
 		if(!this.equals(r.getSrc())) {
 			throw new IllegalArgumentException("Don't exist the junction");
 		}

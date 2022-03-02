@@ -150,8 +150,9 @@ class VehicleTest {
 		String s = "{\"distance\":50,\"road\":\"r1\",\"co2\":50,\"location\":50,\"id\":\"v1\",\"class\":1,\"speed\":50,\"status\":\"TRAVELING\"}";
 		JSONObject jo = new JSONObject(s);
 		
-		JSONObject report = v1.report();
-		assertTrue(jo.similar(report));
+		String c = v1.report().toString();
+		//JSONObject report = v1.report();
+		assertTrue(jo.similar(new JSONObject(c)));
 	}
 
 	@Test

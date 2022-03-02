@@ -27,7 +27,7 @@ class RoadMapTest {
 		Vehicle v2 = new Vehicle("v2", 50, 1, Arrays.asList(j1, j2));
 		Vehicle v3 = new Vehicle("v3", 50, 1, Arrays.asList(j2, j3));
 		Vehicle v4 = new Vehicle("v4", 50, 1, Arrays.asList(j2, j3));
-	
+		
 		map.addJunction(j1);
 		map.addJunction(j2);
 		map.addJunction(j3);
@@ -68,8 +68,9 @@ class RoadMapTest {
 		assertEquals(v3, lv.get(2));
 
 		// check the report
+		String c = map.report().toString();
 		String s = "{\"roads\":[{\"speedlimit\":100,\"co2\":0,\"weather\":\"SUNNY\",\"vehicles\":[],\"id\":\"r1\"},{\"speedlimit\":100,\"co2\":0,\"weather\":\"SUNNY\",\"vehicles\":[],\"id\":\"r2\"}],\"vehicles\":[{\"distance\":0,\"co2\":0,\"id\":\"v1\",\"class\":1,\"speed\":0,\"status\":\"PENDING\"},{\"distance\":0,\"co2\":0,\"id\":\"v2\",\"class\":1,\"speed\":0,\"status\":\"PENDING\"},{\"distance\":0,\"co2\":0,\"id\":\"v3\",\"class\":1,\"speed\":0,\"status\":\"PENDING\"},{\"distance\":0,\"co2\":0,\"id\":\"v4\",\"class\":1,\"speed\":0,\"status\":\"PENDING\"}],\"junctions\":[{\"green\":\"none\",\"queues\":[],\"id\":\"j1\"},{\"green\":\"none\",\"queues\":[{\"road\":\"r1\",\"vehicles\":[]}],\"id\":\"j2\"},{\"green\":\"none\",\"queues\":[{\"road\":\"r2\",\"vehicles\":[]}],\"id\":\"j3\"}]}";
-		assertTrue( new JSONObject(s).similar(map.report()));
+		assertTrue( new JSONObject(s).similar(new JSONObject(c)));
 	
 	}
 

@@ -3,6 +3,7 @@ package simulator.factories;
 import org.json.JSONObject;
 
 import simulator.model.Event;
+
 import simulator.model.Weather;
 
 public abstract class NewRoadEventBuilder extends Builder<Event> {
@@ -24,8 +25,16 @@ public abstract class NewRoadEventBuilder extends Builder<Event> {
 		int maxspeed = data.getInt("maxspeed");
 		String weather = data.getString("weather");
 		Weather w = Weather.valueOf(weather.toUpperCase());
-
-		return createRoad(time, id, src, dest, maxspeed, co2limit, length, w);
+		NewRoadEventBuilder be;
+		
+		if(this._type == "new_city_road") {
+			be = new NewCityRoadEventBuilder();
+			return be.createRoad(time, id, src, dest, maxspeed, co2limit, length, w);
+		}else {
+			be = new NewInterCityRoadEventBuilder();
+			return be.createRoad(time, id, src, dest, maxspeed, co2limit, length, w);
+		}
+		
 	}
 
 	public abstract Event createRoad(int time, String id, String src,

@@ -2,7 +2,6 @@ package simulator.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,15 +32,18 @@ public class RoadMap {
 		if(map_junction.get(j._id) == null) {
 			this.junction.add(j);
 			this.map_junction.put(j._id, j);
+		}else {
+			throw new IllegalArgumentException("This junction already exists");
 		}
 	}
 	
 	
-	@SuppressWarnings("unlikely-arg-type")
+	
 	void addRoad(Road r) {
-		if(road.contains(r) == true && map_road.containsValue(r.getDest()) == false &&
-				map_road.containsValue(r.getSrc()) == false){
-					
+		if(road.contains(r.getId()) && map_junction.containsValue(r.getDest()) &&
+				map_junction.containsValue(r.getSrc())){
+				
+			throw new IllegalArgumentException("This road already exists");
 		}else {
 			road.add(r);
 			map_road.put(r._id, r);
@@ -49,26 +51,21 @@ public class RoadMap {
 	}
 	
 	void addVehicle(Vehicle v) {
-		Iterator<Junction> ju = v.getItinerary().iterator();
-		Junction curJun = null;
-		Junction previusJun = null;
-
-		while (ju.hasNext()) { // comprobando el itinerario valido 
-			curJun = ju.next();
-			if(curJun == null)break;
-			if(previusJun != null){	
-				if(previusJun.roadTo(curJun) == null){
-					throw new IllegalArgumentException("");
-				}
+		
+		List<Junction> l = v.getItinerary();
+		
+		if(vehicle.contains(v)) {
+			throw new IllegalArgumentException("This vehicle exist in the list");
+		}
+		
+		for(int i = 0; i < l.size()-1; i++) {
+			if(l.get(i).roadTo(l.get(i+1)) == null) {
+				throw new IllegalArgumentException("This itinerary is null");
 			}
-			previusJun = curJun;
 		}
-		if(this.map_vehicle.containsKey(v._id)) {
-			throw new IllegalArgumentException();
-		}else {
-			vehicle.add(v);
-			map_vehicle.put(v._id, v); 
-		}
+		
+		vehicle.add(v);
+		map_vehicle.put(v.getId(), v);
 	}
 	
 	public Junction getJunction(String id) {

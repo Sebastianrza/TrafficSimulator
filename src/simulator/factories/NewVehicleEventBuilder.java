@@ -19,7 +19,7 @@ public class NewVehicleEventBuilder extends Builder<Event> {
 	@Override
 	protected Event createTheInstance(JSONObject data) {
 		// TODO Auto-generated method stub
-		if(!data.isEmpty()) {
+		
 			
 			int time = data.getInt("time");
 			String id = data.getString("id");
@@ -30,11 +30,8 @@ public class NewVehicleEventBuilder extends Builder<Event> {
 			for(int i = 0; i < data.getJSONArray("itinerary").length(); i++) {
 				it.add(data.getJSONArray("itinerary").getString(i));
 			}
-			NewVehicleEvent v = new NewVehicleEvent(time, id, maxSpeed, contClass, it);
-			return v;
-		}else {
-			return null;
-		}
+			return  new NewVehicleEvent(time, id, maxSpeed, contClass, it);
+			
 		
 	}
 

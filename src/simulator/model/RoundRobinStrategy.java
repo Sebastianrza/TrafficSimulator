@@ -12,20 +12,10 @@ public class RoundRobinStrategy implements LightSwitchingStrategy {
 	@Override
 	public int chooseNextGreen(List<Road> roads, List<List<Vehicle>> qs, int currGreen, int lastSwitchingTime,
 			int currTime) {
-		if(roads.isEmpty()) {
-			return -1;
-		}
-		if(roads.size() == 0) {
-			return -1;
-		}
-		if(currGreen == -1) {
-			return 0;
-		} 
-		if((currTime-lastSwitchingTime) < timeSlot) {
-			return currGreen;
-		}else{
-			return ((currGreen+1)%roads.size());
-		}
+		if(roads.isEmpty()) return -1;
+		if(currGreen == -1) return 0;
+		if((currTime-lastSwitchingTime) < timeSlot) return currGreen;
+		return ((currGreen+1)%roads.size());
 	}
 	@Override
 	public String toString(){

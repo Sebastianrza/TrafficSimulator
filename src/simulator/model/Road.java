@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,39 +24,43 @@ public abstract class Road extends SimulatedObject{
 			Weather weather) {
 		super(id);
 		this.total_contamination = 0;
-		this.current_speed_limit = this.maximum_speed;
 		this.vehicles = new LinkedList<Vehicle>();
 		if(src != null) {
 		this.src = src;
+		
 		}else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("This junction src is null");
 		}
 		if (dest !=null) {
 		this.dest = dest;
+		
 		}else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("This junction dest is null");
 		}
-		if(length >=0) {
+		if(length >0) {
 		this.length = length;
 		}else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("This length is less than zero");
 		}
-		if (maximum_speed >=0 ) {
+		if (maximum_speed >0 ) {
 		this.maximum_speed = maximum_speed;
+		this.current_speed_limit = this.maximum_speed;
 		}else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("This maxSpeed is less then zero");
 		}
 		
 		if(contLimit >=0) {
 		this.contLimit = contLimit;
 		}else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("This contLimit is less then zero");
 		}
 		if(weather != null) {
 		this.weather = weather;
 		}else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("This weather is null");
 		}
+		src.addOutGoingRoad(this);
+		dest.addIncommingRoad(this);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -92,7 +97,7 @@ public abstract class Road extends SimulatedObject{
 	}
 
 	public List<Vehicle> getVehicles() {
-		return vehicles;
+		return Collections.unmodifiableList(vehicles);
 	}
 
 	public void setSrc(Junction src) {

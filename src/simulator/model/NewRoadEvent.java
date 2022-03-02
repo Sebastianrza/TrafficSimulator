@@ -11,7 +11,7 @@ public abstract class NewRoadEvent extends Event {
     protected int co2limit;
 
 	
-	NewRoadEvent(int time, String id, String src, String dest, int length,  int co2limit, int maxSpeed, Weather weather) {
+	public NewRoadEvent(int time, String id, String src, String dest, int length,  int co2limit, int maxSpeed, Weather weather) {
 		
 		super(time);
 		this.id = id;
@@ -30,12 +30,10 @@ public abstract class NewRoadEvent extends Event {
 	void execute(RoadMap map) {
 		
 		if(src == null || dest ==null) {
-			throw new IllegalArgumentException("Cruces Nulos");
+			throw new IllegalArgumentException("the Junctions is null");
 		}else {
 			Road r = createRoad(this.id, map.getJunction(src), map.getJunction(dest), this.maxSpeed, this.co2limit, this.length, this.weather);
 			map.addRoad(r);
-			map.getJunction(dest).addIncommingRoad(r);	
-			map.getJunction(src).addOutGoingRoad(r);
 		}
 		
 	}

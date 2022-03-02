@@ -26,7 +26,8 @@ public class Vehicle extends SimulatedObject{
 		this.total_contamination = 0;
 		this.lastJunction = 0;
 		this.total_travelled_distance = 0;
-		if(maxSpeed >= 0) {
+		this.road = null;
+		if(maxSpeed > 0) {
 			this.maxSpeed = maxSpeed;
 		}else {
 			throw new IllegalArgumentException("MaxSpeed has to be positive");
@@ -39,7 +40,7 @@ public class Vehicle extends SimulatedObject{
 		if(itinerary.size() >= 2) {
 			this.itinerary = Collections.unmodifiableList(new ArrayList<>(itinerary));
 		}else {
-			
+			throw new IllegalArgumentException("The itinerary must be greather than 2");
 		}
 		if(status == null) status = VehicleStatus.PENDING;
 		// TODO Auto-generated constructor stub
@@ -148,6 +149,8 @@ public class Vehicle extends SimulatedObject{
 	}
 
 	void moveToNextRoad() {
+		
+	
 		if(this.status != VehicleStatus.PENDING && this.status != VehicleStatus.WAITING) {
 			throw new IllegalArgumentException("This Vehicle is in status incorrect");
 		}
@@ -159,13 +162,13 @@ public class Vehicle extends SimulatedObject{
 			this.road = null;
 			this.location = 0;
 			this.actSpeed = 0;
-		}else {//Si todavia le queda algun itinerario 
+		}else {//Si todavia le queda algun itinerario
+			
 			this.road = this.itinerary.get(lastJunction).roadTo(this.itinerary.get(lastJunction+1));
 			this.location = 0;
 			this.status = VehicleStatus.TRAVELING;
 			this.actSpeed = 0;
 			this.road.enter(this);
-			
 		}
 	}
 
