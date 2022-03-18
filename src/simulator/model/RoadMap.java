@@ -20,16 +20,16 @@ public class RoadMap {
 	
 	protected RoadMap() {
 		
-		this.junction = new ArrayList<>();
-		this.road = new ArrayList<>();
-		this.vehicle = new ArrayList<>();
-		this.map_junction = new LinkedHashMap<>();
-		this.map_road = new LinkedHashMap<>();
-		this.map_vehicle =new LinkedHashMap<>();
+		this.junction = new ArrayList<Junction>();
+		this.road = new ArrayList<Road>();
+		this.vehicle = new ArrayList<Vehicle>();
+		this.map_junction = new LinkedHashMap<String, Junction>();
+		this.map_road = new LinkedHashMap<String, Road>();
+		this.map_vehicle =new LinkedHashMap<String, Vehicle>();
 	}
 	
 	void addJunction(Junction j) {
-		if(map_junction.get(j._id) == null) {
+		if(!map_junction.containsKey(j.getId())) {
 			this.junction.add(j);
 			this.map_junction.put(j._id, j);
 		}else {
@@ -46,7 +46,7 @@ public class RoadMap {
 			throw new IllegalArgumentException("This road already exists");
 		}else {
 			road.add(r);
-			map_road.put(r._id, r);
+			map_road.put(r.getId(), r);
 		}
 	}
 	

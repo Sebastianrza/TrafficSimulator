@@ -127,6 +127,14 @@ public class Vehicle extends SimulatedObject{
 			throw new IllegalArgumentException("ContClass It has to be between 0 and 10 ");
 		}
 	}
+	public int getTotal_travelled_distance() {
+		return total_travelled_distance;
+	}
+
+	public void setTotal_travelled_distance(int total_travelled_distance) {
+		this.total_travelled_distance = total_travelled_distance;
+	}
+
 	@Override
 	void advance(int time) {
 		if(this.status == VehicleStatus.TRAVELING) {

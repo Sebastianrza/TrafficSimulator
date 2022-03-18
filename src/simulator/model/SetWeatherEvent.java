@@ -21,7 +21,7 @@ public class SetWeatherEvent extends Event {
 	void execute(RoadMap map) {
 		
 		for(Pair<String,Weather> w : ws) {
-			if(map.map_road.get(w.getFirst()) != null) {
+			if(map.getRoad(w.getFirst()) != null) {
 				map.getRoad(w.getFirst()).setWeather(w.getSecond());
 			}else {
 				throw new IllegalArgumentException("The road not exist in the MapRoad");
@@ -32,7 +32,7 @@ public class SetWeatherEvent extends Event {
 	}
 	@Override
 	public String toString() {
-		String wS = "New Weather: [" ;
+		String wS = "Change Weather: [" ;
 		for(Pair<String, Weather> p : ws){
 			wS += "(" + p.getFirst() + ", " + p.getSecond()+"), ";
 		}

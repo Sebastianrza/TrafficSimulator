@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -34,6 +36,7 @@ import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
 import simulator.model.LightSwitchingStrategy;
 import simulator.model.TrafficSimulator;
+import simulator.view.MainWindow;
 
 public class Main {
 
@@ -41,6 +44,7 @@ public class Main {
 	private static Integer _timeLimit = null;
 	private static String _inFile = null;
 	private static String _outFile = null;
+	private static String view = "gui";
 	private static Factory<Event> _eventsFactory = null;
 
 	private static void parseArgs(String[] args) {
@@ -56,6 +60,7 @@ public class Main {
 			CommandLine line = parser.parse(cmdLineOptions, args);
 			parseHelpOption(line, cmdLineOptions);
 			parseInFileOption(line);
+			parseViewOption(line);
 			parseOutFileOption(line);
 			parseTickOption(line);
 			// if there are some remaining arguments, then something wrong is
@@ -84,6 +89,7 @@ public class Main {
 				Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
 		cmdLineOptions.addOption(Option.builder("t").longOpt("ticks").hasArg().desc("Ticks to the simulator's main loop(Default value is 10").build());
+		cmdLineOptions.addOption(Option.builder("m").longOpt("OutPutView").hasArg().desc("GUI Version: options 'gui' or 'console'").build());
 		return cmdLineOptions;
 	}
 
@@ -113,7 +119,14 @@ public class Main {
         	_timeLimit = Integer.parseInt(line.getOptionValue("t"));
         }
     }
-
+	private static void parseViewOption(CommandLine line) throws ParseException {
+		if(line.getOptionValue("m") != null){
+			if(line.getOptionValue("m").contentEquals("gui") || line.getOptionValue("m").contentEquals("console")) {
+				view = line.getOptionValue("m");
+			}else
+				throw new ParseException("it's not a input view");
+		}
+    }
 	private static void initFactories() {
 
 		ArrayList<Builder<LightSwitchingStrategy>> lsbs = new ArrayList<>();
@@ -158,10 +171,23 @@ public class Main {
 		}// TODO complete this method to start the simulation
 	}
 
+	private static void startGUIMode(){
+		TrafficSimulator ts = new TrafficSimulator();
+		Controller ctrl = new Controller(ts, _eventsFactory);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				new MainWindow(ctrl);
+			}
+		});
+	}
 	private static void start(String[] args) throws IOException {
 		initFactories();
 		parseArgs(args);
-		startBatchMode();
+		if(view.contentEquals("console"))
+			startBatchMode();
+		else
+			startGUIMode();
 	}
 
 	// example command lines:

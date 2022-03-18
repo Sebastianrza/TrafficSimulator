@@ -10,9 +10,11 @@ import org.json.JSONTokener;
 
 import simulator.factories.Factory;
 import simulator.model.Event;
+import simulator.model.Observable;
+import simulator.model.TrafficSimObserver;
 import simulator.model.TrafficSimulator;
 
-public class Controller {
+public class Controller implements Observable<TrafficSimObserver>{
 	
 	private TrafficSimulator sim;
 	private Factory<Event> eventsFactory;
@@ -59,8 +61,8 @@ public class Controller {
 				if(ja.getJSONObject(i)== null) {
 					throw new IllegalArgumentException("This Object is null or empty");
 				}else {
-					Event e = eventsFactory.createInstance(ja.getJSONObject(i));
-					sim.addEvent(e);
+					
+					sim.addEvent(eventsFactory.createInstance(ja.getJSONObject(i)));
 				}
 			}
 		}
@@ -80,7 +82,36 @@ public class Controller {
 		p.println("}");
 	}
 	
+	public void run(int n){
+		for (int i = 0; i<n; i++) {
+			this.sim.advance();
+			this.sim.report();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void reset() {
 		this.sim.reset();
 	}
+
+	@Override
+	public void addObserver(TrafficSimObserver o) {
+		// TODO Auto-generated method stub
+		sim.addObserver(o);
+	}
+
+	@Override
+	public void removeObserver(TrafficSimObserver o) {
+		// TODO Auto-generated method stub
+		sim.removeObserver(o);
+	}
+	
+	public void addEvent(Event e) {
+		sim.addEvent(e);
+	} 
 }

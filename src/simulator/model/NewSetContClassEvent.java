@@ -29,7 +29,7 @@ public class NewSetContClassEvent extends Event{
 	}
 	@Override
 	public String toString() {
-		String sC = "New contamination class: [";
+		String sC = "Change contamination class: [";
 		for(Pair<String,Integer> c : cs){
 			sC += "(" + c.getFirst() + ", " + c.getSecond() + "), ";
 		}

@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -54,6 +52,91 @@ public class Junction extends SimulatedObject{
 		// TODO Auto-generated constructor stub
 	}
 	
+	public List<Road> getIncoming_roads() {
+		return incoming_roads;
+	}
+
+	public Map<Junction, Road> getOutgoing_roads() {
+		return outgoing_roads;
+	}
+
+	public List<List<Vehicle>> getQueue() {
+		return queue;
+	}
+	public List<Vehicle> getQueue(Road r){
+		for(int i=0; i < this.incoming_roads.size(); i++){
+			if(this.incoming_roads.get(i).equals(r)) {return this.queue.get(i);}
+		}
+		return null;
+	}
+	public Map<Road, List<Vehicle>> getRoad_queue() {
+		return road_queue;
+	}
+
+	public int getGreen_traffic_light() {
+		return green_traffic_light;
+	}
+
+	public int getTraffic_light_change() {
+		return traffic_light_change;
+	}
+
+	public LightSwitchingStrategy getLsStrategy() {
+		return lsStrategy;
+	}
+
+	public DequeuingStrategy getDqStrategy() {
+		return dqStrategy;
+	}
+
+	public int getxCoor() {
+		return xCoor;
+	}
+
+	public int getyCoor() {
+		return yCoor;
+	}
+
+	public void setIncoming_roads(List<Road> incoming_roads) {
+		this.incoming_roads = incoming_roads;
+	}
+
+	public void setOutgoing_roads(Map<Junction, Road> outgoing_roads) {
+		this.outgoing_roads = outgoing_roads;
+	}
+
+	public void setQueue(List<List<Vehicle>> queue) {
+		this.queue = queue;
+	}
+
+	public void setRoad_queue(Map<Road, List<Vehicle>> road_queue) {
+		this.road_queue = road_queue;
+	}
+
+	public void setGreen_traffic_light(int green_traffic_light) {
+		this.green_traffic_light = green_traffic_light;
+	}
+
+	public void setTraffic_light_change(int traffic_light_change) {
+		this.traffic_light_change = traffic_light_change;
+	}
+
+	public void setLsStrategy(LightSwitchingStrategy lsStrategy) {
+		this.lsStrategy = lsStrategy;
+	}
+
+	public void setDqStrategy(DequeuingStrategy dqStrategy) {
+		this.dqStrategy = dqStrategy;
+	}
+
+	public void setxCoor(int xCoor) {
+		this.xCoor = xCoor;
+	}
+
+	public void setyCoor(int yCoor) {
+		this.yCoor = yCoor;
+	}
+
 	void addIncommingRoad(Road r) {
 		if(this.equals(r.getDest())) {
 			incoming_roads.add(r);
