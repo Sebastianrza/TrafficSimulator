@@ -1,23 +1,25 @@
 package simulator.model;
 
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
 
 import simulator.misc.SortedArrayList;
 
-public class TrafficSimulator {
+public class TrafficSimulator implements Observable<TrafficSimObserver>{
 
 	protected RoadMap roadmap;
 	protected List<Event> list_event ;
+	protected List<TrafficSimObserver> listObserver;
 	private int simulation_time;
 	
 	public TrafficSimulator() {
 		this.roadmap = new RoadMap();
-		this.list_event = new SortedArrayList<>();
-		
+		this.list_event = new SortedArrayList<Event>();
+		this.simulation_time = 0;
+		this.listObserver = new ArrayList<>();
 	}
 	
 	public RoadMap getRoadmap() {
@@ -46,27 +48,28 @@ public class TrafficSimulator {
 
 	public void addEvent (Event e) {
 		this.list_event.add(e);
+		for (TrafficSimObserver o : listObserver) {
+            o.onEventAdded(roadmap, list_event, e, getSimulation_time());
+		}
 	}
 	
 	public void advance() {
 		this.setSimulation_time(this.getSimulation_time() + 1);
-		List<Event> removeEvents = new LinkedList<Event>();
-		for(int i=0; i < this.list_event.size();i++){
-			if(this.list_event.get(i)._time == this.getSimulation_time()){
-				removeEvents.add(this.list_event.get(i));
-			}
+		for (TrafficSimObserver o : listObserver) {
+            o.onAdvanceStart(roadmap, list_event, getSimulation_time());
+        }
+		while(list_event.size() > 0 && list_event.get(0).getTime() == simulation_time) {
+			list_event.remove(0).execute(roadmap);
 		}
-		if(removeEvents.size()!= 0){
-			for(Event e: removeEvents){
-			    e.execute(roadmap);
-			} 
-			this.list_event.removeAll(removeEvents);
-		}		  
+		
 		for(Junction jun : this.roadmap.getJunctions()) {
 			jun.advance(this.simulation_time);
 		}
 		for(Road ro : this.roadmap.getRoads()) {
 			ro.advance(this.simulation_time);
+		}
+		for (TrafficSimObserver o : listObserver) {
+            o.onAdvanceEnd(roadmap, list_event, getSimulation_time());
 		}
 	}
 	
@@ -74,6 +77,9 @@ public class TrafficSimulator {
 		this.roadmap.reset();
 		this.list_event.clear();
 		this.setSimulation_time(0);
+		for(TrafficSimObserver o : listObserver) {
+			o.onReset(roadmap, list_event, getSimulation_time());
+		}
 	}
 	
 	public JSONObject report() {
@@ -82,5 +88,18 @@ public class TrafficSimulator {
 		ts.put("time", this.getSimulation_time());
 		ts.put("state", roadmap.report());
 		return ts;	
+	}
+
+	@Override
+	public void addObserver(TrafficSimObserver o) {
+		// TODO Auto-generated method stub
+		this.listObserver.add(o);
+		o.onRegister(roadmap, list_event, getSimulation_time());
+	}
+
+	@Override
+	public void removeObserver(TrafficSimObserver o) {
+		// TODO Auto-generated method stub
+		this.listObserver.remove(o);
 	}
 }
