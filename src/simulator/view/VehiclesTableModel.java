@@ -10,6 +10,7 @@ import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 import simulator.model.Vehicle;
+import simulator.model.VehicleStatus;
 
 
 public class VehiclesTableModel extends AbstractTableModel implements TrafficSimObserver{
@@ -44,14 +45,28 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	}
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		String s = "";
+		Object s = "";
 		Vehicle v = this.vehicles.get(rowIndex);
 		switch(columnIndex){
 			case 0: //id
 				s = v.getId().toString();
 				break;
 			case 1: //estado del vehiculo
-				s = v.getStatus().toString();
+				VehicleStatus status = vehicles.get(rowIndex).getStatus();
+				switch (status) {
+				case PENDING:
+					s="PENDING";
+					break;
+				case TRAVELING:
+					s= vehicles.get(rowIndex).getRoad().getId() + ":" + vehicles.get(rowIndex).getLocation();
+					break;
+				case WAITING:
+					s="WAITING:"+ vehicles.get(rowIndex).getItinerary().get(vehicles.get(rowIndex).getLastJunction());
+					break;
+				case ARRIVED:
+					s="ARRIVED";
+					break;
+				}
 				break;
 			case 2:	//itinerario
 				s = v.getItinerary().toString();
@@ -100,7 +115,7 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		update(map.getVehicles());
+		vehicles = new ArrayList<Vehicle>();
 		
 	}
 

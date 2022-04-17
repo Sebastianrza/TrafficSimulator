@@ -2,6 +2,7 @@ package simulator.launcher;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -171,9 +172,13 @@ public class Main {
 		}// TODO complete this method to start the simulation
 	}
 
-	private static void startGUIMode(){
+	private static void startGUIMode() throws FileNotFoundException{
 		TrafficSimulator ts = new TrafficSimulator();
 		Controller ctrl = new Controller(ts, _eventsFactory);
+		if(_inFile != null) {
+			InputStream in = new FileInputStream(new File(_inFile));
+			ctrl.loadEvents(in);
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

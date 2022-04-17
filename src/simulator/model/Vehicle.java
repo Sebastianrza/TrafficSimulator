@@ -135,6 +135,14 @@ public class Vehicle extends SimulatedObject{
 		this.total_travelled_distance = total_travelled_distance;
 	}
 
+	public int getLastJunction() {
+		return lastJunction;
+	}
+
+	public void setLastJunction(int lastJunction) {
+		this.lastJunction = lastJunction;
+	}
+
 	@Override
 	void advance(int time) {
 		if(this.status == VehicleStatus.TRAVELING) {
