@@ -34,7 +34,7 @@ public class InterCityRoad extends Road{
 	@Override
 	void updateSpeedLimit() {
 		// TODO Auto-generated method stub
-		if(total_contamination > contLimit){
+		if(total_contamination >= contLimit){
 			current_speed_limit = (int)(maximum_speed*0.5);
 		}else {
 			current_speed_limit = maximum_speed;

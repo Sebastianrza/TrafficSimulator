@@ -174,10 +174,8 @@ public abstract class Road extends SimulatedObject{
 		this.reduceTotalContamination();
 		this.updateSpeedLimit();
 		for(Vehicle v : vehicles) {
-			if(v.getStatus() != VehicleStatus.WAITING) {
 				v.setSpeed(calculateVehicleSpeed(v));
 				v.advance(time);
-			}
 		}
 		compare = new VehicleCompare();
 		vehicles.sort(compare);

@@ -52,7 +52,7 @@ public class Junction extends SimulatedObject{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public List<Road> getIncoming_roads() {
+	public List<Road> getInRoads() {
 		return incoming_roads;
 	}
 
@@ -73,7 +73,7 @@ public class Junction extends SimulatedObject{
 		return road_queue;
 	}
 
-	public int getGreen_traffic_light() {
+	public int getGreenLightIndex() {
 		return green_traffic_light;
 	}
 
@@ -89,11 +89,11 @@ public class Junction extends SimulatedObject{
 		return dqStrategy;
 	}
 
-	public int getxCoor() {
+	public int getX() {
 		return xCoor;
 	}
 
-	public int getyCoor() {
+	public int getY() {
 		return yCoor;
 	}
 

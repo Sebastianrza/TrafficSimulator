@@ -145,11 +145,13 @@ public class Vehicle extends SimulatedObject{
 			   total_contamination += contAct ;
 			   this.total_travelled_distance += (this.location-locationaux);
 			     
-			   if (this.location >= road.getLength()) {
+			   if (this.location == road.getLength()) {
+				   
 				    this.lastJunction++;
 				    status = VehicleStatus.WAITING;
 				    this.actSpeed = 0;
-				    road.getDest().enter(this);
+				    //road.getDest().enter(this);
+				    itinerary.get(lastJunction).enter(this);
 				   
 			   }    
 		}
@@ -175,7 +177,6 @@ public class Vehicle extends SimulatedObject{
 			this.road = this.itinerary.get(lastJunction).roadTo(this.itinerary.get(lastJunction+1));
 			this.location = 0;
 			this.status = VehicleStatus.TRAVELING;
-			this.actSpeed = 0;
 			this.road.enter(this);
 		}
 	}

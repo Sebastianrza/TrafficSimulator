@@ -40,7 +40,7 @@ public class RoadMap {
 	
 	
 	void addRoad(Road r) {
-		if(road.contains(r.getId()) && map_junction.containsValue(r.getDest()) &&
+		if(map_road.containsKey(r.getId()) && map_junction.containsValue(r.getDest()) &&
 				map_junction.containsValue(r.getSrc())){
 				
 			throw new IllegalArgumentException("This road already exists");

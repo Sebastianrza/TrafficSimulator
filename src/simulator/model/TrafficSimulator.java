@@ -47,10 +47,19 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 	}
 
 	public void addEvent (Event e) {
-		this.list_event.add(e);
-		for (TrafficSimObserver o : listObserver) {
-            o.onEventAdded(roadmap, list_event, e, getSimulation_time());
+		if(e.getTime() <=simulation_time) {
+   		 for(TrafficSimObserver obs : listObserver) {
+       		 obs.onError("Cannot add events for the past");
+       	 }
+   		 throw new IllegalArgumentException("Cannot add events for the past!");
+   		 
+   	 	}else {
+	   	 	this.list_event.add(e);
+			for (TrafficSimObserver o : listObserver) {
+	            o.onEventAdded(roadmap, list_event, e, getSimulation_time());
 		}
+   	 	}
+		
 	}
 	
 	public void advance() {

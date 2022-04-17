@@ -8,8 +8,8 @@ public class MoveFirstStrategy implements DequeuingStrategy{
 	@Override
 	public List<Vehicle> dequeue(List<Vehicle> q) {
 		// TODO Auto-generated method stub
-		List<Vehicle> firstVehicle = new ArrayList<>();
-		firstVehicle.add(q.get(0));
+		List<Vehicle> firstVehicle = new ArrayList<Vehicle>();
+		if(!q.isEmpty()) firstVehicle.add(q.get(0));
 		
 		return firstVehicle;
 	}
