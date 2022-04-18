@@ -45,10 +45,11 @@ public class Main {
 	private static Integer _timeLimit = null;
 	private static String _inFile = null;
 	private static String _outFile = null;
-	private static String view = "gui";
+	private static String view = null;
+	private static String selected = null;
 	private static Factory<Event> _eventsFactory = null;
 
-	private static void parseArgs(String[] args) {
+	private static void parseArgs(String[] args) throws Exception {
 
 		// define the valid command line options
 		//
@@ -90,7 +91,7 @@ public class Main {
 				Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
 		cmdLineOptions.addOption(Option.builder("t").longOpt("ticks").hasArg().desc("Ticks to the simulator's main loop(Default value is 10").build());
-		cmdLineOptions.addOption(Option.builder("m").longOpt("OutPutView").hasArg().desc("GUI Version: options 'gui' or 'console'").build());
+		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg().desc("GUI Version: options 'gui' or 'console'").build());
 		return cmdLineOptions;
 	}
 
@@ -120,12 +121,21 @@ public class Main {
         	_timeLimit = Integer.parseInt(line.getOptionValue("t"));
         }
     }
-	private static void parseViewOption(CommandLine line) throws ParseException {
-		if(line.getOptionValue("m") != null){
-			if(line.getOptionValue("m").contentEquals("gui") || line.getOptionValue("m").contentEquals("console")) {
-				view = line.getOptionValue("m");
-			}else
-				throw new ParseException("it's not a input view");
+	private static void parseViewOption(CommandLine line) throws Exception {
+		if(line.hasOption("m")) {
+			view = line.getOptionValue("m");
+			if(view.equalsIgnoreCase("gui")) {
+				selected = "gui";
+			}
+			else if(view.equalsIgnoreCase("console")) {
+				selected = "console";
+			}
+			else {
+				throw new Exception("Incorrect mode of run simulator");
+			}
+		}
+		else {
+			selected = "gui";
 		}
     }
 	private static void initFactories() {
@@ -172,7 +182,7 @@ public class Main {
 		}// TODO complete this method to start the simulation
 	}
 
-	private static void startGUIMode() throws FileNotFoundException{
+	private static void startGUIMode() throws IOException{
 		TrafficSimulator ts = new TrafficSimulator();
 		Controller ctrl = new Controller(ts, _eventsFactory);
 		if(_inFile != null) {
@@ -186,13 +196,14 @@ public class Main {
 			}
 		});
 	}
-	private static void start(String[] args) throws IOException {
+	private static void start(String[] args) throws Exception {
 		initFactories();
 		parseArgs(args);
-		if(view.contentEquals("console"))
-			startBatchMode();
-		else
+		if (selected == "gui") {
 			startGUIMode();
+		}else {
+			startBatchMode();
+		}
 	}
 
 	// example command lines:
